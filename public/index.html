@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KrishiBot</title>
+<style>
+body{font-family:Arial;background:#f2f2f2;margin:0;padding:0}
+.container{max-width:600px;margin:auto;background:white;height:100vh;display:flex;flex-direction:column}
+header{background:#2e7d32;color:white;padding:10px;text-align:center}
+#chat{flex:1;overflow:auto;padding:10px}
+.msg{margin:6px 0;padding:8px;border-radius:6px}
+.user{background:#c8e6c9}
+.bot{background:#eeeeee}
+footer{display:flex;padding:10px;border-top:1px solid #ccc}
+input{flex:1;padding:8px}
+button{padding:8px 12px;margin-left:6px}
+</style>
+</head>
+<body>
+<div class="container">
+<header>🌾 KrishiBot - AI Krishi Sahayak</header>
+
+<div id="chat"></div>
+
+<footer>
+<input id="phone" placeholder="Mobile Number">
+<input id="msg" placeholder="Apna sawaal puchiye">
+<button onclick="send()">Send</button>
+</footer>
+
+<button onclick="buyPremium()" style="margin:10px">Premium ₹49/month</button>
+
+</div>
+
+<script>
+async function send(){
+
+let phone=document.getElementById("phone").value
+let msg=document.getElementById("msg").value
+
+add("user",msg)
+
+let res=await fetch("/chat",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({phone:phone,message:msg})
+})
+
+let data=await res.json()
+
+add("bot",data.reply)
+
+}
+
+function add(type,text){
+let div=document.createElement("div")
+div.className="msg "+type
+div.innerText=text
+document.getElementById("chat").appendChild(div)
+}
+
+function buyPremium(){
+window.open("https://rzp.io/l/YOURPAYMENTLINK")
+}
+</script>
+</body>
+</html>
